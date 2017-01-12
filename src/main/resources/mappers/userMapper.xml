@@ -42,7 +42,55 @@
     </update>
 
     <delete id="deleteUser" parameterType="int">
-        delete from user where id =#{id}
+        DELETE FROM user
+        WHERE id = #{id}
     </delete>
+
+    <!-- 关联数据查询 -->
+    <!-- 方法一： User 联合Article进行查询 的配置 (多对一的方式)-->
+
+    <resultMap id="resultUserArticleList" type="Article">
+        <id property="id" column="aid"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+
+        <association property="user" javaType="User">
+            <id property="id" column="id"/>
+            <result property="userName" column="userName"/>
+            <result property="userAddress" column="userAddress"/>
+        </association>
+    </resultMap>
+
+    <select id="getUserArticles" parameterType="int" resultMap="resultUserArticleList">
+        SELECT
+            user.id,
+            user.userName,
+            user.userAddress,
+            article.id aid,
+            article.title,
+            article.content
+        FROM user, article
+        WHERE user.id = article.userid AND user.id = #{id}
+    </select>
+
+    <!-- 方法二:利用之前的 resultListUser -->
+    <resultMap id="resultUserArticleList-2" type="Article">
+        <id property="id" column="aid"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <association property="user" javaType="User" resultMap="resultListUser"/>
+    </resultMap>
+
+    <select id="getUserArticles2" parameterType="int" resultMap="resultUserArticleList-2">
+        SELECT
+            user.id,
+            user.userName,
+            user.userAddress,
+            article.id aid,
+            article.title,
+            article.content
+        FROM user, article
+        WHERE user.id = article.userid AND user.id = #{id}
+    </select>
 
 </mapper>

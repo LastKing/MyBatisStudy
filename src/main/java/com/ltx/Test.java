@@ -1,6 +1,7 @@
 package com.ltx;
 
 import com.ltx.dao.IUserOperation;
+import com.ltx.entry.Article;
 import com.ltx.entry.User;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -103,4 +104,27 @@ public class Test {
         session.close();
     }
 
+    public void getUserArticles(int userid) {
+        SqlSession session = sqlSessionFactory.openSession();
+        IUserOperation userOperation = session.getMapper(IUserOperation.class);
+        List<Article> articles = userOperation.getUserArticles(userid);
+        for (Article article : articles) {
+            System.out.println(article.getTitle() + ":" + article.getContent() +
+                    ":作者是:" + article.getUser().getUserName() + ":地址:" +
+                    article.getUser().getUserAddress());
+        }
+        session.close();
+    }
+
+    public void getUserArticles2(int userid) {
+        SqlSession session = sqlSessionFactory.openSession();
+        IUserOperation userOperation = session.getMapper(IUserOperation.class);
+        List<Article> articles = userOperation.getUserArticles2(userid);
+        for (Article article : articles) {
+            System.out.println(article.getTitle() + ":" + article.getContent() +
+                    ":作者是:" + article.getUser().getUserName() + ":地址:" +
+                    article.getUser().getUserAddress());
+        }
+        session.close();
+    }
 }

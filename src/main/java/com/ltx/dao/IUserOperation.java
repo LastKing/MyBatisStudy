@@ -1,5 +1,6 @@
 package com.ltx.dao;
 
+import com.ltx.entry.Article;
 import com.ltx.entry.User;
 
 import java.util.List;
@@ -17,4 +18,8 @@ public interface IUserOperation {
     public void updateUser(User user);
 
     public void deleteUser(int id);
+
+    public List<Article> getUserArticles(int id);
+
+    public List<Article> getUserArticles2(int id);
 }
